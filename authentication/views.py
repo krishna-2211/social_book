@@ -1,17 +1,17 @@
 # from tokenize import generate_tokens
 from django.shortcuts import redirect, render
-from django.http import HttpResponse
-from django.contrib.auth.models import User
+from authentication.models import CustomUser
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
-from social_book import settings
-from django.core.mail import send_mail, EmailMessage
-from django.contrib.sites.shortcuts import get_current_site
-from django.template.loader import render_to_string
-from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
-from django.utils.encoding import force_bytes, force_str
-from . tokens import generate_token
-# from . models import UserProfile
+from .forms import CustomUserFilter
+from django_filters.views import FilterView
+from . models import UploadedFile
+from . forms import UploadFileForm
+from django.contrib.auth.decorators import login_required
+from social_book.database import engine
+from sqlalchemy import Table, MetaData
+import pandas as pd
+import numpy as np
 
 # Create your views here.
 def home(request):
@@ -26,12 +26,13 @@ def signup(request):
         email = request.POST['email']
         pass1 = request.POST['pass1']
         pass2 = request.POST['pass2']
+        is_public = request.POST['is_public']
 
-        if User.objects.filter(username=username):
+        if CustomUser.objects.filter(username=username):
             messages.error(request, "Username already exists !")
             return redirect('home')
 
-        if User.objects.filter(email=email).exists():
+        if CustomUser.objects.filter(email=email).exists():
             messages.error(request, "Email already registered !")
             return redirect('home')
         
@@ -41,13 +42,18 @@ def signup(request):
 
         if pass1 != pass2:
             messages.error(request, "Passwords didn't match !")
-            return redirect('home')
+        else:
+            if is_public == 'on':
+                is_public = True
+            else:
+                is_public = False
 
         if not username.isalnum():
             messages.error(request, "Username must be alphanumeric !")
             return redirect('home')
-
-        myuser = User.objects.create_user(username, email, pass1)
+        
+        myuser = CustomUser.objects.create_user(email, pass1)
+        myuser.is_public = is_public
         myuser.username = username
         myuser.first_name = fname
         myuser.last_name = lname
@@ -61,46 +67,22 @@ def signup(request):
     return render(request, "authentication/signup.html")
 
 
-# def activate(request,uidb64,token):
-#     try:
-#         uid = force_text(urlsafe_base64_decode(uidb64))
-#         myuser = User.objects.get(pk=uid)
-#     except (TypeError,ValueError,OverflowError,User.DoesNotExist):
-#         myuser = None
-
-#     if myuser is not None and generate_token.check_token(myuser,token):
-#         myuser.is_active = True
-#         # user.profile.signup_confirmation = True
-#         myuser.save()
-#         login(request,myuser)
-#         messages.success(request, "Your Account has been activated!!")
-#         return redirect('signin')
-#     else:
-#         return render(request,'activation_failed.html')
-
-
 def signin(request):
-
-    if request.method == "POST":
-        username = request.POST['username']
+    if request.method == 'POST':
+        email = request.POST['username']
         pass1 = request.POST['pass1']
-
-        user = authenticate(username=username, password=pass1)
-
+        
+        user = authenticate(email=email, password=pass1)
+        
         if user is not None:
             login(request, user)
-            username = user.username
             # fname = user.first_name
-            # lname = user.last_name
-            # email = user.email
-
-            messages.success(request,"You have successfully logged in!")
-            return redirect('display')
-
+            
+            return redirect("options")
         else:
-            messages.error(request, "Bad credentials !")
+            messages.error(request, "Bad Credentials!!")
             return redirect('home')
-
+    
     return render(request, "authentication/signin.html")
 
 def signout(request):
@@ -108,8 +90,97 @@ def signout(request):
     messages.success(request, "Logged Out Successfully !")
     return redirect('home')
 
-def display(request):
-    users= User.objects.all()
-    print(users)
-    return render (request, "authentication/display.html", {"users":users})
+def authors_and_sellers(request):
+    try:
+        users = CustomUser.objects.all()
+        if request.method=="POST":
+            print(request)
+            print("POST CALLED")
+            users=users.filter(is_public=True)
+            messages.success(request, "Logged In Successfully!!")
+            # print(users)
+            return render(request, "authentication/authors_and_sellers.html", {"users": users})
+        else:
+            print("In else")
+            return render(request, "authentication/authors_and_sellers.html", {"users": users})
+    except Exception as e:
+        messages.error(request, f"Error: {e}")
+        return render(request, "authentication/authors_and_sellers.html", {"users": []})
 
+class AuthorsAndSellersView(FilterView):
+    model = CustomUser
+    template_name = 'authentication/authors_and_sellers.html'
+    filterset_class = CustomUserFilter
+    context_object_name = 'users'
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        self.filterset = CustomUserFilter(self.request.GET, queryset=queryset)
+        return self.filterset.qs
+
+def options(request):
+    return render(request, "authentication/options.html")
+
+
+
+@login_required
+def upload_books(request):
+    if request.method == 'POST':
+        form = UploadFileForm(request.POST, request.FILES)
+        if form.is_valid():
+            file_instance = form.save(commit=False)
+            file_instance.user = request.user
+            file_instance.save()
+            return redirect('uploaded_files')
+    else:
+        form = UploadFileForm()
+
+    return render(request, 'authentication/upload_books.html', {'form': form})
+
+@login_required
+def uploaded_files(request):
+    files = UploadedFile.objects.all()
+    return render(request, 'authentication/uploaded_files.html', {'uploaded_files': files})
+
+
+def fetch_data(request):
+    metadata = MetaData()
+    customuser_table = Table('authentication_customuser', metadata, autoload_with=engine)
+
+    with engine.connect() as connection:
+        result = connection.execute(customuser_table.select())
+        columns = result.keys()
+        data = [dict(zip(columns, row)) for row in result]
+
+    return render(request, 'authentication/fetch_data.html', {"data": data})
+
+
+
+def dataframe(request):
+    data = {'Column1': np.random.rand(10),
+            'Column2': np.random.randint(1, 100, 10),
+            'Column3': np.random.choice(['A', 'B', 'C'], 10)}
+
+    df = pd.DataFrame(data)
+
+    filtered_df = df[df['Column1'] > 0.5]
+
+    filtered_columns_df = df[['Column1', 'Column2']]
+
+    df.replace({'Column2': {73: 999}}, inplace=True)
+
+    dummy_data = {'Column1': np.random.rand(5),
+                  'Column2': np.random.randint(1, 100, 5),
+                  'Column3': np.random.choice(['A', 'B', 'C'], 5)}
+
+    dummy_df = pd.DataFrame(dummy_data)
+
+    appended_df = pd.concat([df, dummy_df], ignore_index=True)
+
+    return render(request, 'authentication/dataframe.html', {
+        'original_df': df.to_html(),
+        'filtered_df': filtered_df.to_html(),
+        'filtered_columns_df': filtered_columns_df.to_html(),
+        'replaced_df': df.to_html(),
+        'appended_df': appended_df.to_html(),
+    })

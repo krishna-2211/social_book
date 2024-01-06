@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Fetch Page</title>
+</head>
+<body>
+    <h1>Data Fetch Page</h1>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Username</th>
+                <th>Email</th>
+                <th>Password</th>
+                <th>Last Login</th>
+                <th>Is Superuser</th>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Is Staff</th>
+                <th>Is Active</th>
+                <th>Date Joined</th>
+                <th>Is Public</th>
+                <th>Fname</th>
+                <th>Lname</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for row in data %}
+            <tr>
+                <td>{{ row.id }}</td>
+                <td>{{ row.username }}</td>
+                <td>{{ row.email }}</td>
+                <td>{{ row.password }}</td>
+                <td>{{ row.last_login }}</td>
+                <td>{{ row.is_superuser }}</td>
+                <td>{{ row.first_name }}</td>
+                <td>{{ row.last_name }}</td>
+                <td>{{ row.is_staff }}</td>
+                <td>{{ row.is_active }}</td>
+                <td>{{ row.date_joined }}</td>
+                <td>{{ row.is_public }}</td>
+                <td>{{ row.fname }}</td>
+                <td>{{ row.lname }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>

@@ -1,8 +1,4 @@
 <!DOCTYPE html>
-<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
-<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
-<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
-<!--[if gt IE 8]>      <html class="no-js"> <!--<![endif]-->
 <html>
     <head>
         <meta charset="utf-8">
@@ -10,35 +6,78 @@
         <title>Sign In</title>
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="stylesheet" href="">
+        {% load static %}
+        <link rel="apple-touch-icon" sizes="180x180" href="{% static "images/apple-touch-icon.png" %}">
+	    <link rel="icon" type="image/png" sizes="32x32" href="{% static "images/favicon-32x32.png" %}">
+	    <link rel="icon" type="image/png" sizes="16x16" href="{% static "images/favicon-16x16.png" %}">
+
+        <link rel="stylesheet" type="text/css" href="{% static "styles/core.css" %}">
+	    <link rel="stylesheet" type="text/css" href="{% static "styles/icon-font.min.css" %}">
+        <link rel="stylesheet" type="text/css" href="{% static "styles/style.css" %}">
+
+        <script async src="https://www.googletagmanager.com/gtag/js?id=UA-119386393-1"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+
+            gtag('config', 'UA-119386393-1');
+        </script>
+
     </head>
-    <body>
 
-        {% for message in messages%}
-        <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
-        <strong>Message:</strong> {{ message }}
-        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-        <span aria-hidden="true">&times;</span>
-        </button>
+    <body class="login-page">
+        <div class="login-header box-shadow">
+            <div class="container-fluid d-flex justify-content-between align-items-center">
+                {% for message in messages%}
+                <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                <strong>Message:</strong> {{ message }}
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                </button>
+                </div>
+                {% endfor %}
+                <div class="brand-logo">
+                    <a href="{% static "signin" %}">
+                        <img src="{% static "images/deskapp-logo.svg" %}" alt="">
+                    </a>
+                </div>
+            </div>
         </div>
-        {% endfor %}
-        
-        <h3>Sign In to your account</h3>
+        <div class="login-wrap d-flex align-items-center flex-wrap justify-content-center">
+            <div class="container">
+                <div class="row align-items-center">
+                    <div class="col-md-6 col-lg-7">
+                        <img src="{% static "images/login-page-img.png" %}" alt="">
+                    </div>
+                    <div class="col-md-6 col-lg-5">
+                        <div class="login-box bg-white box-shadow border-radius-10">
+                            <div class="login-title">
+                                <h2 class="text-center text-primary">SignIn to your account</h2>
+                            </div>
+                            <form action="/signin" method="post" class="mb-2">
+                                {% csrf_token %}
+                                <div class="form-group">
+                                    <label for="username">Email ID</label>
+                                    <input type="text" class="form-control" id="username" name="username" placeholder="Enter Your Email ID" Required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="pass1">Password</label>
+                                    <input type="password" class="form-control" id="pass1" name="pass1" placeholder="Enter Your Password" Required>
+                                </div>
+                                    
+                                <button type="submit">Sign In</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-        <form action="/signin" method="post" class="mb-2">
-        {% csrf_token %}
-        <div class="form-group">
-            <label for="username">Username</label>
-            <input type="text" class="form-control" id="username" name="username" placeholder="Enter Your Username" Required>
-        </div>
-        <div class="form-group">
-            <label for="pass1">Password</label>
-            <input type="password" class="form-control" id="pass1" name="pass1" placeholder="Enter Your Password" Required>
-        </div>
-            
-            <button type="submit">Sign In</button>
-        </form>
-        
-        <script src="" async defer></script>
+        <script src="{% static "static/scripts/core.js" %}"></script>
+        <script src="{% static "static/scripts/script.min.js" %}"></script>
+        <script src="{% static "static/scripts/process.js" %}"></script>
+        <script src="{% static "static/scripts/layout-settings.js" %}"></script>
     </body>
+    
 </html>
