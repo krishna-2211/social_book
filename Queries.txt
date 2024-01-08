@@ -1,0 +1,19 @@
+1. SELECT * FROM authentication_customuser;
+2. SELECT id, username, email FROM authentication_customuser WHERE is_superuser = true;
+3. SELECT COUNT(*) FROM authentication_customuser WHERE is_staff = true;
+4. SELECT username, last_login FROM authentication_customuser WHERE username = 'red';
+5. SELECT id, username, CONCAT(first_name, ' ', last_name) AS full_name FROM authentication_customuser;
+6. SELECT username, date_joined FROM authentication_customuser ORDER BY date_joined;
+7. SELECT username FROM authentication_customuser WHERE is_public = false AND is_staff = false;
+8. SELECT username, email FROM authentication_customuser
+WHERE SUBSTRING(email FROM POSITION('@' IN email) + 1) = 'gmail.com';
+9. SELECT username FROM authentication_customuser WHERE first_name LIKE 'k%';
+10. SELECT auth.id, auth.username, auth.email, files.title
+FROM authentication_customuser as auth
+INNER JOIN authentication_uploadedfile as files
+ON auth.id = files.id;
+11. SELECT auth.id, auth.username, auth.email, files.title
+FROM authentication_customuser AS auth
+LEFT JOIN authentication_uploadedfile AS files
+ON auth.id = files.user_id
+WHERE auth.is_public = true;
