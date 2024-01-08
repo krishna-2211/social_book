@@ -1,14 +1,54 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Data Fetch Page</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th,
+        td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #4285f4; /* Google Blue */
+            color: white;
+        }
+
+        tbody tr:nth-child(odd) {
+            background-color: #e3f2fd; /* Light Blue Accent 1 */
+        }
+
+        tbody tr:nth-child(even) {
+            background-color: #bbdefb; /* Light Blue Accent 2 */
+        }
+    </style>
 </head>
+
 <body>
     <h1>Data Fetch Page</h1>
-    <table border="1">
+    <table>
         <thead>
             <tr>
                 <th>ID</th>
@@ -29,24 +69,25 @@
         </thead>
         <tbody>
             {% for row in data %}
-            <tr>
-                <td>{{ row.id }}</td>
-                <td>{{ row.username }}</td>
-                <td>{{ row.email }}</td>
-                <td>{{ row.password }}</td>
-                <td>{{ row.last_login }}</td>
-                <td>{{ row.is_superuser }}</td>
-                <td>{{ row.first_name }}</td>
-                <td>{{ row.last_name }}</td>
-                <td>{{ row.is_staff }}</td>
-                <td>{{ row.is_active }}</td>
-                <td>{{ row.date_joined }}</td>
-                <td>{{ row.is_public }}</td>
-                <td>{{ row.fname }}</td>
-                <td>{{ row.lname }}</td>
-            </tr>
+                <tr>
+                    <td>{{ row.id }}</td>
+                    <td>{{ row.username }}</td>
+                    <td>{{ row.email }}</td>
+                    <td>{{ row.password }}</td>
+                    <td>{{ row.last_login }}</td>
+                    <td>{{ row.is_superuser }}</td>
+                    <td>{{ row.first_name }}</td>
+                    <td>{{ row.last_name }}</td>
+                    <td>{{ row.is_staff }}</td>
+                    <td>{{ row.is_active }}</td>
+                    <td>{{ row.date_joined }}</td>
+                    <td>{{ row.is_public }}</td>
+                    <td>{{ row.fname }}</td>
+                    <td>{{ row.lname }}</td>
+                </tr>
             {% endfor %}
         </tbody>
     </table>
 </body>
+
 </html>

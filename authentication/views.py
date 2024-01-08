@@ -12,6 +12,14 @@ from social_book.database import engine
 from sqlalchemy import Table, MetaData
 import pandas as pd
 import numpy as np
+from rest_framework import generics, permissions
+from rest_framework.response import Response
+from rest_framework.views import APIView
+from rest_framework_simplejwt.tokens import RefreshToken
+from .serializers import UserSerializer, FileSerializer
+from rest_framework.permissions import IsAuthenticated
+from django.core.mail import send_mail
+from django.conf import settings
 
 # Create your views here.
 def home(request):
@@ -59,6 +67,13 @@ def signup(request):
         myuser.last_name = lname
         myuser.email = email
         myuser.save()
+
+        subject = 'Welcome to Your Website'
+        message = f'Thank you for registering, {myuser.username}! We hope you enjoy your time on our platform.'
+        from_email = 'krishnaap.2211@gmail.com'
+        recipient_list = [myuser.email]
+
+        send_mail(subject, message, from_email, recipient_list)
 
         messages.success(request, "Your account has been successfully created !")
 
@@ -122,7 +137,6 @@ def options(request):
     return render(request, "authentication/options.html")
 
 
-
 @login_required
 def upload_books(request):
     if request.method == 'POST':
@@ -184,3 +198,44 @@ def dataframe(request):
         'replaced_df': df.to_html(),
         'appended_df': appended_df.to_html(),
     })
+
+
+@login_required
+def my_books_dashboard(request):
+    user_files = UploadedFile.objects.filter(user=request.user)
+
+    if user_files.exists():
+        return render(request, 'authentication/my_books.html', {'user_files': user_files})
+    else:
+        messages.info(request, "You haven't uploaded any files yet.")
+        return redirect('upload_books')
+    
+
+class GenerateToken(APIView):
+    def post(self, request):
+        if request.method == 'POST':
+            email = request.data.get('email')
+            password = request.data.get('password')
+
+            # print(f"Received credentials: email={email}, password={password}")
+
+            user = authenticate(request, username=email, password=password)
+
+            # print(f"Authenticated user: {user}")
+
+            if user is not None:
+                refresh = RefreshToken.for_user(user)
+                access_token = str(refresh.access_token)
+                return Response({'access_token': access_token})
+            else:
+                return Response({'error': 'Invalid Credentials'}, status=401)
+        return Response({'error': 'Invalid request method'}, status=400)
+
+
+class FileView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        user_files = UploadedFile.objects.filter(user=request.user)
+        serializer = FileSerializer(user_files, many=True)
+        return Response(serializer.data)

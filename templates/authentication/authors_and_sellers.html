@@ -75,7 +75,60 @@
             <td>{{ user.last_name }}</td>
             <td>{{ user.is_public }}</td>
         </tr>
-        {% endfor %}
+        {% endfor %}<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DataFrame Operations</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+
+        h1, h2 {
+            color: #333;
+        }
+
+        h2 {
+            margin-top: 20px;
+        }
+
+        pre {
+            background-color: #fff;
+            padding: 10px;
+            border: 1px solid #ddd;
+            overflow-x: auto;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>DataFrame Operations</h1>
+
+    <h2>Original DataFrame</h2>
+    <pre>{{ original_df|safe }}</pre>
+
+    <h2>Filtered DataFrame</h2>
+    <pre>{{ filtered_df|safe }}</pre>
+
+    <h2>Filtered DataFrame with 2 Columns</h2>
+    <pre>{{ filtered_columns_df|safe }}</pre>
+
+    <h2>Replaced DataFrame</h2>
+    <pre>{{ replaced_df|safe }}</pre>
+
+    <h2>Appended DataFrame</h2>
+    <pre>{{ appended_df|safe }}</pre>
+</body>
+
+</html>
+
     </table>
 </body>
 

@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -41,31 +42,52 @@
                     <div class="login-box bg-white box-shadow border-radius-10">
                         {% block content %}
                         <section>
-                            <h2>Choose an Option</h2>
+                            <h2 class="mb-3">Choose an Option</h2>
                             <form method="post" action="authors_and_sellers">
                                 {% csrf_token %}
-                                <button type="submit">View Authors and Sellers</button>
+                                <button type="submit" style="background-color: #87CEEB;">View Authors and Sellers</button>
                             </form>
                         </section>
 
                         <section>
                             <form method="post" action="upload_books">
                                 {% csrf_token %}
-                                <button type="submit">Upload Books</button>
+                                <button type="submit" style="background-color: #87CEEB;">Upload Books</button>
+                            </form>
+                        </section>
+
+                        <section>
+                            <form method="post" action="uploaded_files">
+                                {% csrf_token %}
+                                <button type="submit" style="background-color: #87CEEB;">Uploaded Files</button>
                             </form>
                         </section>
 
                         <section>
                             <form method="post" action="fetch_data">
                                 {% csrf_token %}
-                                <button type="submit">Fetch Data</button>
+                                <button type="submit" style="background-color: #87CEEB;">Fetch Data</button>
                             </form>
                         </section>
 
                         <section>
                             <form method="post" action="dataframe">
                                 {% csrf_token %}
-                                <button type="submit">Dataframe Operations</button>
+                                <button type="submit" style="background-color: #87CEEB;">Dataframe Operations</button>
+                            </form>
+                        </section>
+
+                        <section>
+                            <form method="post" action="my_books">
+                                {% csrf_token %}
+                                <button type="submit" style="background-color: #87CEEB;">My Books</button>
+                            </form>
+                        </section>
+
+                        <section>
+                            <form method="post" action="sign_out">
+                                {% csrf_token %}
+                                <button type="submit" style="background-color: #ff6347;">Sign Out</button>
                             </form>
                         </section>
                         {% endblock %}
@@ -79,6 +101,20 @@
     <script src="{% static "scripts/script.min.js" %}"></script>
     <script src="{% static "scripts/process.js" %}"></script>
     <script src="{% static "scripts/layout-settings.js" %}"></script>
+
+    <style>
+        section {
+            margin-bottom: 20px; /* Adjust as needed */
+        }
+
+        button {
+            margin-bottom: 10px; /* Adjust as needed */
+            color: white;
+            padding: 8px 16px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+    </style>
 </body>
 </html>
-
