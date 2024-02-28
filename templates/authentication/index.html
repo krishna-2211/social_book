@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>Home Page</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        {% load static %}
+        <link rel="apple-touch-icon" sizes="180x180" href="{% static "images/apple-touch-icon.png" %}">
+	    <link rel="icon" type="image/png" sizes="32x32" href="{% static "images/favicon-32x32.png" %}">
+	    <link rel="icon" type="image/png" sizes="16x16" href="{% static "images/favicon-16x16.png" %}">
+
+        <link rel="stylesheet" type="text/css" href="{% static "styles/core.css" %}">
+	    <link rel="stylesheet" type="text/css" href="{% static "styles/icon-font.min.css" %}">
+        <link rel="stylesheet" type="text/css" href="{% static "styles/style.css" %}">
+
+        <script async src="https://www.googletagmanager.com/gtag/js?id=UA-119386393-1"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+
+            gtag('config', 'UA-119386393-1');
+        </script>
+    </head>
+    <body class="index-page">
+        <div class="index-header box-shadow">
+            <div class="container-fluid d-flex justify-content-between align-items-center">
+                {% for message in messages%}
+                <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                    <strong>Message:</strong> {{ message }}
+                    <button type="button" class="closed" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                </button>
+                </div>
+                {% endfor %}
+                <div class="brand-logo">
+                    <img src="{% static "images/deskapp-logo.svg" %}" alt="">
+                </div>
+            </div>
+        </div>
+        <div class="login-wrap d-flex align-items-center flex-wrap justify-content-center">
+            <div class="container">
+                <div class="row align-items-center">
+                    <div class="col-md-6 col-lg-7">
+                        <img src="{% static "images/login-page-img.png" %}" alt="">
+                    </div>
+                    <div class="col-md-6 col-lg-5">
+                        <div class="login-box bg-white box-shadow border-radius-10">
+                            <div class="login-title">
+                                <h2 class="text-center text-primary">Welcome to social book</h2>
+                            </div>
+
+                            <button type="submit"> <a href="/signup"> SignUp </a> </button>
+                            <br/>
+                            <br/>
+                            <button type="submit"> <a href="/signin"> SignIn </a> </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>  
+        <script src="" async defer></script>
+    </body>
+</html>

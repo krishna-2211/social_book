@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Authors and Sellers</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+
+        h2 {
+            color: #333;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        form {
+            margin-bottom: 20px;
+        }
+
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 8px 16px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h2>Authors and Sellers</h2>
+
+    <form method="POST" class="filter-form">
+        {% csrf_token %}
+            <button type="submit">Filter</button>
+    </form>
+
+    <table>
+        <tr>
+            <th>Username</th>
+            <th>Email</th>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Public Visibility</th>
+        </tr>
+        {% for user in users %}
+        <tr>
+            <td>{{ user.username }}</td>
+            <td>{{ user.email }}</td>
+            <td>{{ user.first_name }}</td>
+            <td>{{ user.last_name }}</td>
+            <td>{{ user.is_public }}</td>
+        </tr>
+        {% endfor %}<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DataFrame Operations</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+
+        h1, h2 {
+            color: #333;
+        }
+
+        h2 {
+            margin-top: 20px;
+        }
+
+        pre {
+            background-color: #fff;
+            padding: 10px;
+            border: 1px solid #ddd;
+            overflow-x: auto;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>DataFrame Operations</h1>
+
+    <h2>Original DataFrame</h2>
+    <pre>{{ original_df|safe }}</pre>
+
+    <h2>Filtered DataFrame</h2>
+    <pre>{{ filtered_df|safe }}</pre>
+
+    <h2>Filtered DataFrame with 2 Columns</h2>
+    <pre>{{ filtered_columns_df|safe }}</pre>
+
+    <h2>Replaced DataFrame</h2>
+    <pre>{{ replaced_df|safe }}</pre>
+
+    <h2>Appended DataFrame</h2>
+    <pre>{{ appended_df|safe }}</pre>
+</body>
+
+</html>
+
+    </table>
+</body>
+
+</html>

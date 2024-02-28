@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DataFrame Operations</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+
+        h1, h2 {
+            color: #333;
+            margin-top: 20px;
+        }
+
+        pre {
+            background-color: #f9f9f9; /* Lighter gray */
+            padding: 10px;
+            border: 1px solid #ddd;
+            overflow-x: auto;
+            margin-bottom: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            background-color: #fff;
+            border: 1px solid #ddd;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #c3d9ff; /* Light Blue */
+            color: #333;
+        }
+
+        tbody tr:nth-child(odd) {
+            background-color: #ecf4ff; /* Lighter Blue Accent 1 */
+        }
+
+        tbody tr:nth-child(even) {
+            background-color: #d6e8ff; /* Lighter Blue Accent 2 */
+        }
+    </style>
+</head>
+
+<body>
+    <h1>DataFrame Operations</h1>
+
+    <section>
+        <h2>Original DataFrame</h2>
+        <pre>{{ original_df|safe }}</pre>
+    </section>
+
+    <section>
+        <h2>Filtered DataFrame</h2>
+        <pre>{{ filtered_df|safe }}</pre>
+    </section>
+
+    <section>
+        <h2>Filtered DataFrame with 2 Columns</h2>
+        <pre>{{ filtered_columns_df|safe }}</pre>
+    </section>
+
+    <section>
+        <h2>Replaced DataFrame</h2>
+        <pre>{{ replaced_df|safe }}</pre>
+    </section>
+
+    <section>
+        <h2>Appended DataFrame</h2>
+        <pre>{{ appended_df|safe }}</pre>
+    </section>
+</body>
+
+</html>

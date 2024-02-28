@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Uploaded Files{% endblock %}</title>
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static "styles/table.css" %}">
+</head>
+
+<body class="bg-light">
+    <div class="container mt-5">
+        <h2 class="mb-4 text-info">Uploaded Files</h2>
+        <div class="table-responsive">
+            <table class="custom-table">
+                <thead>
+                    <tr>
+                        <th>Title</th>
+                        <th>Description</th>
+                        <th>Visibility</th>
+                        <th>Cost</th>
+                        <th>Year of Published</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for file in uploaded_files %}
+                        <tr>
+                            <td>{{ file.title }}</td>
+                            <td>{{ file.description }}</td>
+                            <td>{{ file.visibility }}</td>
+                            <td>{{ file.cost }}</td>
+                            <td>{{ file.year_published }}</td>
+                            <td>
+                                <a href="{{ file.file.url }}" download class="btn btn-download">Download</a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    {% if uploaded_files.count == 0 %}
+                        <tr>
+                            <td colspan="6" class="no-files-message">No files uploaded.</td>
+                        </tr>
+                    {% endif %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+
+</html>
